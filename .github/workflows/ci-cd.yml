@@ -2,11 +2,16 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
+
+  # =========================
+  # CI - TEST
+  # =========================
   test:
     runs-on: ubuntu-latest
 
@@ -28,17 +33,25 @@ jobs:
         env:
           DJANGO_SECRET_KEY: dummy-secret-for-ci
           DEBUG: "True"
-        run: python manage.py check
+        run: |
+          python manage.py check
 
       - name: Run tests
         env:
           DJANGO_SECRET_KEY: dummy-secret-for-ci
           DEBUG: "True"
-        run: python manage.py test
+        run: |
+          python manage.py test
 
+
+  # =========================
+  # CI/CD - DOCKER BUILD
+  # =========================
   build-and-push:
     needs: test
+
     runs-on: ubuntu-latest
+
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
@@ -51,7 +64,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push image
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/job-portal:latest
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
