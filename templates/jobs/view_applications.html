@@ -1,0 +1,22 @@
+<h1>Applicants for {{ job.title }}</h1>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Candidate</th>
+        <th>Resume</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for application in applications %}
+    <tr>
+        <td>{{ application.candidate.username }}</td>
+        <td><a href="{{ application.resume.url }}" target="_blank">View Resume</a></td>
+        <td>{{ application.status }}</td>
+        <td>
+            <a href="{% url 'update_status' application.id 'accepted' %}">Accept</a> |
+            <a href="{% url 'update_status' application.id 'rejected' %}">Reject</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

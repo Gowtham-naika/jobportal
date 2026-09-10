@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Applications</h2>
+
+{% if applications %}
+    {% for app in applications %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4>{{ app.job.title }}</h4>
+            <p><strong>Company:</strong> {{ app.job.company }}</p>
+            <p><strong>Status:</strong> 
+                {% if app.status == 'pending' %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                {% elif app.status == 'accepted' %}
+                    <span class="badge bg-success">Accepted</span>
+                {% else %}
+                    <span class="badge bg-danger">Rejected</span>
+                {% endif %}
+            </p>
+
+            <p><strong>Applied on:</strong> {{ app.applied_on }}</p>
+
+            <a href="{% url 'job_detail' app.job.id %}" class="btn btn-primary">View Job</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>You have not applied to any jobs yet.</p>
+{% endif %}
+
+{% endblock %}

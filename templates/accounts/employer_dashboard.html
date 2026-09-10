@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Employer Dashboard</h2>
+
+<a href="{% url 'create_job' %}" class="btn btn-primary">Create New Job</a>
+<a href="{% url 'employer_job_posts' %}" class="btn btn-secondary">My Job Posts</a>
+<a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+
+{% endblock %}

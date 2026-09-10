@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>My Job Posts</h2>
+
+{% for job in jobs %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h4>{{ job.title }}</h4>
+        <p>{{ job.company }} - {{ job.location }}</p>
+    </div>
+</div>
+{% empty %}
+<p>You have not posted any jobs yet.</p>
+{% endfor %}
+
+{% endblock %}
